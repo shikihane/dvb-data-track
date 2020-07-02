@@ -177,12 +177,13 @@ namespace 数据分析软件
             MessageBox.Show("保存完毕");
         }
 
-        Queue Freqenercy = new Queue(200);
+        //Queue Time = new Queue(200);
+        //Queue Freqenercy = new Queue(200);
         private void Form1_Load(object sender, EventArgs e)
         {
             btSearch_Click(null, null);
-            chartFreq.Series[0].YValueType = ChartValueType.Double;
-            chartFreq.Series[0].Points.DataBindY(Freqenercy);
+            //chartFreq.Series[0].YValueType = ChartValueType.Double;
+            //chartFreq.Series[0].Points.DataBindXY(Time,Freqenercy);
         }
 
         private void btClear_Click(object sender, EventArgs e)
