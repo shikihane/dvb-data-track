@@ -16,6 +16,7 @@ using Application = Microsoft.Office.Interop.Excel.Application;
 using System.Reflection;
 using System.Threading;
 using System.Collections;
+using Chart = System.Windows.Forms.DataVisualization.Charting.Chart;
 
 namespace 数据分析软件
 {
@@ -102,6 +103,13 @@ namespace 数据分析软件
                     //Debug.WriteLine(" ");
                     ApandData(time, digit);
                 }
+                else
+                {
+                    if (buff.Contains("reset"))
+                    {
+                        Log("板子复位！");
+                    }
+                }
             }
             catch (TimeoutException)
             {
@@ -113,6 +121,16 @@ namespace 数据分析软件
         }
 
 
+        void ChangeXAsix(Chart chart)
+        {
+            if (chart.Series[0].Points.Count > 100)
+            {
+                chart.Series[0].Points.RemoveAt(0);
+            }
+            chart.ChartAreas[0].AxisX.Minimum = chartFreq.Series[0].Points[0].XValue - 0.000001;
+            chart.ChartAreas[0].AxisX.Maximum = chartFreq.Series[0].Points.Last().XValue + 0.000001;
+        }
+
         private void ApandData(DateTime time, double[] data)
         {
             this.Invoke(new System.Action(() =>
@@ -121,6 +139,11 @@ namespace 数据分析软件
                 chartSymbol.Series[0].Points.AddXY(time, data[1]/1000);
                 chartLevel.Series[0].Points.AddXY(time, data[2]);
                 chartCN.Series[0].Points.AddXY(time, data[3]);
+                ChangeXAsix(chartFreq);
+                ChangeXAsix(chartSymbol);
+                ChangeXAsix(chartLevel);
+                ChangeXAsix(chartCN);
+
 
                 if (chartFreq.ChartAreas[0].AxisY.Minimum == 0)
                 {
@@ -142,6 +165,7 @@ namespace 数据分析软件
                     Debug.WriteLine($"Level Min: {chartLevel.ChartAreas[0].AxisY.Minimum}" +
                      $"Level Max: {chartLevel.ChartAreas[0].AxisY.Maximum}");
                 }
+
             }));
         }
 
