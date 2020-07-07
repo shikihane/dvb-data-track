@@ -65,7 +65,7 @@ namespace 数据分析软件
             {
                 MessageBox.Show($"出错！消息为：{ex.Message}. 堆栈为:{ex.StackTrace}");
             }
-           
+
         }
 
         private void btStart_Click(object sender, EventArgs e)
@@ -115,20 +115,43 @@ namespace 数据分析软件
             {
                 Log("读取超时!");
             }
-            
-           
-           
+
+
+
         }
 
 
-        void ChangeXAsix(Chart chart)
+        class Range
         {
-            if (chart.Series[0].Points.Count > 100)
+            public double min;
+            public double max;
+
+            public Range(double min, double max)
+            {
+                this.min = min;
+                this.max = max;
+            }
+        }
+
+
+        void ChangeXAsix(Chart chart,Func<double, Range> func)
+        {
+            if (chart.Series[0].Points.Count > 500)
             {
                 chart.Series[0].Points.RemoveAt(0);
             }
-            chart.ChartAreas[0].AxisX.Minimum = chartFreq.Series[0].Points[0].XValue - 0.000001;
-            chart.ChartAreas[0].AxisX.Maximum = chartFreq.Series[0].Points.Last().XValue + 0.000001;
+            chart.ChartAreas[0].AxisX.Minimum = chart.Series[0].Points[0].XValue - 0.000001;
+            chart.ChartAreas[0].AxisX.Maximum = chart.Series[0].Points.Last().XValue + 0.000001;
+
+            //var avg = chart.Series[0].Points.Select(p => p.YValues[0]).Average();
+            //var range = func(avg);
+            //if (range != null)
+            {
+                var min = chart.Series[0].Points.Select(p => p.YValues[0]).Min();
+                var max = chart.Series[0].Points.Select(p => p.YValues[0]).Max();
+                chart.ChartAreas[0].AxisY.Minimum = min-1;
+                chart.ChartAreas[0].AxisY.Maximum = max+1;
+            }
         }
 
         private void ApandData(DateTime time, double[] data)
@@ -139,33 +162,10 @@ namespace 数据分析软件
                 chartSymbol.Series[0].Points.AddXY(time, data[1]/1000);
                 chartLevel.Series[0].Points.AddXY(time, data[2]);
                 chartCN.Series[0].Points.AddXY(time, data[3]);
-                ChangeXAsix(chartFreq);
-                ChangeXAsix(chartSymbol);
-                ChangeXAsix(chartLevel);
-                ChangeXAsix(chartCN);
-
-
-                if (chartFreq.ChartAreas[0].AxisY.Minimum == 0)
-                {
-                    chartFreq.ChartAreas[0].AxisY.Minimum = (data[0] / 1000) - 1;
-                    Debug.WriteLine($"Freq Min: {chartFreq.ChartAreas[0].AxisY.Minimum}" +
-                        $"Freq Max: {chartFreq.ChartAreas[0].AxisY.Maximum}");
-                }
-
-                if (chartSymbol.ChartAreas[0].AxisY.Minimum == 0)
-                {
-                    chartSymbol.ChartAreas[0].AxisY.Minimum = (data[1] / 1000) - 1;
-                    Debug.WriteLine($"Symbol Min: {chartSymbol.ChartAreas[0].AxisY.Minimum}" +
-                     $"Symbol Max: {chartSymbol.ChartAreas[0].AxisY.Maximum}");
-                }
-
-                if (chartLevel.ChartAreas[0].AxisY.Maximum == 0)
-                {
-                    chartLevel.ChartAreas[0].AxisY.Maximum = (data[2]) + 1;
-                    Debug.WriteLine($"Level Min: {chartLevel.ChartAreas[0].AxisY.Minimum}" +
-                     $"Level Max: {chartLevel.ChartAreas[0].AxisY.Maximum}");
-                }
-
+                ChangeXAsix(chartFreq, avg => new Range(avg - 1, avg + 1));
+                ChangeXAsix(chartSymbol, avg => new Range(avg - 1, avg + 1));
+                ChangeXAsix(chartLevel, avg => new Range(avg - 1, avg + 1));
+                ChangeXAsix(chartCN, avg => new Range(avg - 1, avg + 1));
             }));
         }
 
@@ -183,20 +183,23 @@ namespace 数据分析软件
             App.Visible = false;
             var Wbook = (_Workbook)(App.Workbooks.Add(Missing.Value));
             var WSheet = (_Worksheet)Wbook.ActiveSheet;
-            WSheet.Cells[1, 1] = "时间";
-            WSheet.Cells[1, 2] = "频率:KHz";
-            WSheet.Cells[1, 3] = "符号率:KHz";
-            WSheet.Cells[1, 4] = "电平:dBm";
-            WSheet.Cells[1, 5] = "载噪比:dB";
+            WSheet.Cells[1, 1] = "序号";
+            WSheet.Cells[1, 2] = "时间"; 
+            WSheet.Cells[1, 3] = "频率:KHz"; 
+            WSheet.Cells[1, 4] = "符号率:KHz"; 
+            WSheet.Cells[1, 5] = "电平:dBm";
+            WSheet.Cells[1, 6] = "载噪比:dB";
 
             for (int i = 0; i < chartFreq.Series[0].Points.Count; i++)
             {
-                WSheet.Cells[i + 2, 1] = chartFreq.Series[0].Points[i].XValue;
-                WSheet.Cells[i + 2, 2] = chartFreq.Series[0].Points[i].YValues[0];
-                WSheet.Cells[i + 2, 3] = chartSymbol.Series[0].Points[i].YValues[0];
-                WSheet.Cells[i + 2, 4] = chartLevel.Series[0].Points[i].YValues[0];
-                WSheet.Cells[i + 2, 5] = chartCN.Series[0].Points[i].YValues[0];
+                WSheet.Cells[i + 2, 1] = i;
+                WSheet.Cells[i + 2, 2] = chartFreq.Series[0].Points[i].XValue;
+                WSheet.Cells[i + 2, 3] = chartFreq.Series[0].Points[i].YValues[0];
+                WSheet.Cells[i + 2, 4] = chartSymbol.Series[0].Points[i].YValues[0];
+                WSheet.Cells[i + 2, 5] = chartLevel.Series[0].Points[i].YValues[0];
+                WSheet.Cells[i + 2, 6] = chartCN.Series[0].Points[i].YValues[0];
             }
+
             App.Visible = true;
             MessageBox.Show("保存完毕");
         }
