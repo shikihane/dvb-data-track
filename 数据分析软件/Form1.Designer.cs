@@ -48,6 +48,8 @@
             this.btSave = new System.Windows.Forms.Button();
             this.tbDebug = new System.Windows.Forms.TextBox();
             this.btClear = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lbDemodLock = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chartFreq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartSymbol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartLevel)).BeginInit();
@@ -101,7 +103,7 @@
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series1.Name = "Freqencny";
-            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
+            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
             series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
             this.chartFreq.Series.Add(series1);
             this.chartFreq.Size = new System.Drawing.Size(450, 300);
@@ -117,7 +119,7 @@
             series2.ChartArea = "ChartArea1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series2.Name = "Symbol";
-            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
+            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
             series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
             this.chartSymbol.Series.Add(series2);
             this.chartSymbol.Size = new System.Drawing.Size(450, 300);
@@ -133,7 +135,7 @@
             series3.ChartArea = "ChartArea1";
             series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series3.Name = "Level";
-            series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
+            series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
             series3.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
             this.chartLevel.Series.Add(series3);
             this.chartLevel.Size = new System.Drawing.Size(450, 300);
@@ -149,7 +151,7 @@
             series4.ChartArea = "ChartArea1";
             series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series4.Name = "Series1";
-            series4.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
+            series4.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
             series4.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
             this.chartCN.Series.Add(series4);
             this.chartCN.Size = new System.Drawing.Size(450, 300);
@@ -195,11 +197,31 @@
             this.btClear.UseVisualStyleBackColor = true;
             this.btClear.Click += new System.EventHandler(this.btClear_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(362, 73);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "demod锁定:";
+            // 
+            // lbDemodLock
+            // 
+            this.lbDemodLock.AutoSize = true;
+            this.lbDemodLock.Location = new System.Drawing.Point(433, 73);
+            this.lbDemodLock.Name = "lbDemodLock";
+            this.lbDemodLock.Size = new System.Drawing.Size(11, 12);
+            this.lbDemodLock.TabIndex = 11;
+            this.lbDemodLock.Text = "?";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 762);
+            this.Controls.Add(this.lbDemodLock);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.tbDebug);
             this.Controls.Add(this.btClear);
             this.Controls.Add(this.btSave);
@@ -239,6 +261,8 @@
         private System.Windows.Forms.Button btSave;
         private System.Windows.Forms.TextBox tbDebug;
         private System.Windows.Forms.Button btClear;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbDemodLock;
     }
 }
 

@@ -88,19 +88,33 @@ namespace 数据分析软件
             {
                 var buff = port.ReadLine();
                 var digit = new double[4];
-                var match = Regex.Match(buff, @"frequery=(\d+)	 symbol=(\d+) 	 level = (-?\d+),C_N=(-?\d+)");
+                var match = Regex.Match(buff, @"frequery=(\d+)	 symbol=(\d+) 	 level = (-?\d+),C_N=(-?\d+\.\d+)db demodlock=(\d)");
                 var time = DateTime.Now;
                 if (match.Success)
                 {
-                    for (int i = 0; i < match.Groups.Count; i++)
+                    for (int i = 0; i < match.Groups.Count-1; i++)
                     {
                         if (i != 0)
                         {
-                            //Debug.Write(match.Groups[i].Value + " ");
                             digit[i - 1] = Convert.ToDouble(match.Groups[i].Value);
                         }
                     }
-                    //Debug.WriteLine(" ");
+                    this.Invoke(new System.Action(() =>
+                    {
+                        if (match.Groups[5].Value.Contains("0"))
+                        {
+                            lbDemodLock.Text = "失锁";
+                        }
+                        else if (match.Groups[5].Value.Contains("1"))
+                        {
+                            lbDemodLock.Text = "锁定";
+                        }
+                        else
+                        {
+                            lbDemodLock.Text = "未知";
+                        }
+                    }));
+                   
                     ApandData(time, digit);
                 }
                 else
@@ -136,12 +150,20 @@ namespace 数据分析软件
 
         void ChangeXAsix(Chart chart,Func<double, Range> func)
         {
-            if (chart.Series[0].Points.Count > 500)
+            int count = chart.Series[0].Points.Count;
+            if (count > 500)
             {
                 chart.Series[0].Points.RemoveAt(0);
+                chart.ChartAreas[0].AxisX.Minimum = chart.Series[0].Points.First().XValue - 1;
+                chart.ChartAreas[0].AxisX.Maximum = chart.Series[0].Points.Last().XValue + 1;
             }
-            chart.ChartAreas[0].AxisX.Minimum = chart.Series[0].Points[0].XValue - 0.000001;
-            chart.ChartAreas[0].AxisX.Maximum = chart.Series[0].Points.Last().XValue + 0.000001;
+            else
+            {
+                var remain = count / 100;
+                chart.ChartAreas[0].AxisX.Minimum = 0;
+                chart.ChartAreas[0].AxisX.Maximum = remain*100 + 100;
+            }
+           
 
             //var avg = chart.Series[0].Points.Select(p => p.YValues[0]).Average();
             //var range = func(avg);
@@ -153,19 +175,20 @@ namespace 数据分析软件
                 chart.ChartAreas[0].AxisY.Maximum = max+1;
             }
         }
-
+        int count = 1;
         private void ApandData(DateTime time, double[] data)
         {
             this.Invoke(new System.Action(() =>
             {
-                chartFreq.Series[0].Points.AddXY(time, data[0]/1000);
-                chartSymbol.Series[0].Points.AddXY(time, data[1]/1000);
-                chartLevel.Series[0].Points.AddXY(time, data[2]);
-                chartCN.Series[0].Points.AddXY(time, data[3]);
+                chartFreq.Series[0].Points.AddXY(count, data[0]/1000);
+                chartSymbol.Series[0].Points.AddXY(count, data[1]/1000);
+                chartLevel.Series[0].Points.AddXY(count, data[2]);
+                chartCN.Series[0].Points.AddXY(count, data[3]);
                 ChangeXAsix(chartFreq, avg => new Range(avg - 1, avg + 1));
                 ChangeXAsix(chartSymbol, avg => new Range(avg - 1, avg + 1));
                 ChangeXAsix(chartLevel, avg => new Range(avg - 1, avg + 1));
                 ChangeXAsix(chartCN, avg => new Range(avg - 1, avg + 1));
+                count++;
             }));
         }
 
@@ -215,6 +238,7 @@ namespace 数据分析软件
 
         private void btClear_Click(object sender, EventArgs e)
         {
+            count = 1;
             btStart_Click(null, null);
             chartFreq.Series[0].Points.Clear();
             chartSymbol.Series[0].Points.Clear();
@@ -224,7 +248,7 @@ namespace 数据分析软件
             chartFreq.ChartAreas[0].AxisY.Minimum = 0;
             chartSymbol.ChartAreas[0].AxisY.Minimum = 0;
             chartLevel.ChartAreas[0].AxisY.Maximum = 0;
-
+            tbDebug.Text = "";
             btStart_Click(null, null);
         }
 
