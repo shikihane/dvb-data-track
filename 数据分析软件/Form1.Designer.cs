@@ -51,6 +51,8 @@
             this.tbDebug = new System.Windows.Forms.TextBox();
             this.btClear = new System.Windows.Forms.Button();
             this.tbWindow = new System.Windows.Forms.TrackBar();
+            this.btFix = new System.Windows.Forms.Button();
+            this.btTest = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chartFreq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartSymbol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartLevel)).BeginInit();
@@ -122,6 +124,7 @@
             this.chartFreq.Size = new System.Drawing.Size(450, 300);
             this.chartFreq.TabIndex = 4;
             this.chartFreq.Text = "chartFreq";
+            this.chartFreq.Paint += new System.Windows.Forms.PaintEventHandler(this.chartFreq_Paint);
             // 
             // chartSymbol
             // 
@@ -231,6 +234,26 @@
             this.tbWindow.Value = 1;
             this.tbWindow.ValueChanged += new System.EventHandler(this.tbWindow_ValueChanged);
             // 
+            // btFix
+            // 
+            this.btFix.Location = new System.Drawing.Point(278, 65);
+            this.btFix.Name = "btFix";
+            this.btFix.Size = new System.Drawing.Size(75, 23);
+            this.btFix.TabIndex = 8;
+            this.btFix.Text = "修复";
+            this.btFix.UseVisualStyleBackColor = true;
+            this.btFix.Click += new System.EventHandler(this.btFix_Click);
+            // 
+            // btTest
+            // 
+            this.btTest.Location = new System.Drawing.Point(359, 65);
+            this.btTest.Name = "btTest";
+            this.btTest.Size = new System.Drawing.Size(75, 23);
+            this.btTest.TabIndex = 8;
+            this.btTest.Text = "测试";
+            this.btTest.UseVisualStyleBackColor = true;
+            this.btTest.Click += new System.EventHandler(this.btTest_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -240,6 +263,8 @@
             this.Controls.Add(this.tbDebug);
             this.Controls.Add(this.btClear);
             this.Controls.Add(this.btSave);
+            this.Controls.Add(this.btTest);
+            this.Controls.Add(this.btFix);
             this.Controls.Add(this.btStart);
             this.Controls.Add(this.chartCN);
             this.Controls.Add(this.chartLevel);
@@ -278,6 +303,8 @@
         private System.Windows.Forms.TextBox tbDebug;
         private System.Windows.Forms.Button btClear;
         private System.Windows.Forms.TrackBar tbWindow;
+        private System.Windows.Forms.Button btFix;
+        private System.Windows.Forms.Button btTest;
     }
 }
 

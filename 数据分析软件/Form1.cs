@@ -169,7 +169,7 @@ namespace 数据分析软件
             {
                 var remain = count / 100;
                 chart.ChartAreas[0].AxisX2.Maximum = chart.Series[1].Points.First().XValue + remain * 100 + 100;
-                chart.ChartAreas[0].AxisX2.Maximum = remain * 100 + 100;
+                chart.ChartAreas[0].AxisX2.Minimum = chart.Series[1].Points.First().XValue + remain * 100;
             }
         }
 
@@ -252,9 +252,9 @@ namespace 数据分析软件
             chartLevel.Series[0].Points.Clear();
             chartCN.Series[0].Points.Clear();
 
-            chartFreq.ChartAreas[0].AxisY.Minimum = 0;
-            chartSymbol.ChartAreas[0].AxisY.Minimum = 0;
-            chartLevel.ChartAreas[0].AxisY.Maximum = 0;
+            //chartFreq.ChartAreas[0].AxisY.Minimum = 0;
+            //chartSymbol.ChartAreas[0].AxisY.Minimum = 0;
+            //chartLevel.ChartAreas[0].AxisY.Maximum = 0;
             tbDebug.Text = "";
             btStart_Click(null, null);
         }
@@ -289,6 +289,38 @@ namespace 数据分析软件
             MaxCount = tbWindow.Value * 100;
             Array.ForEach(charts,chart => TrunData(chart));
             btStart_Click(null, null);
+        }
+
+        private void btFix_Click(object sender, EventArgs e)
+        {
+            Array.ForEach(charts, chart => {
+                chart.ChartAreas[0].AxisX.Minimum = double.NaN;
+                chart.ChartAreas[0].AxisX.Maximum = double.NaN;
+                chart.ChartAreas[0].AxisY.Minimum = double.NaN;
+                chart.ChartAreas[0].AxisY.Maximum = double.NaN;
+                if (chart.Series.Count == 2)
+                {
+                    chart.ChartAreas[0].AxisX2.Minimum = double.NaN;
+                    chart.ChartAreas[0].AxisX2.Maximum = double.NaN;
+                }
+            });
+        }
+
+        private void btTest_Click(object sender, EventArgs e)
+        {
+            Array.ForEach(charts, chart => {
+                Log($"X {chart.ChartAreas[0].AxisX.Minimum}:{chart.ChartAreas[0].AxisX.Maximum}:{chart.ChartAreas[0].AxisX.Interval}\r\n");
+                Log($"Y {chart.ChartAreas[0].AxisY.Minimum}:{chart.ChartAreas[0].AxisY.Maximum}:{chart.ChartAreas[0].AxisY.Interval}\r\n");
+                if (chart.Series.Count == 2)
+                {
+                    Log($"X2 {chart.ChartAreas[0].AxisX2.Minimum}:{chart.ChartAreas[0].AxisX2.Maximum}::{chart.ChartAreas[0].AxisX2.Interval}\r\n");
+                }
+            });
+        }
+
+        private void chartFreq_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
