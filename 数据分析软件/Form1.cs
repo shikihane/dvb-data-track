@@ -22,9 +22,11 @@ namespace 数据分析软件
 {
     public partial class Form1 : Form
     {
+        Chart[] charts;
         public Form1()
         {
             InitializeComponent();
+            charts = new Chart[]{ chartFreq,chartSymbol,chartLevel,chartCN };
         }
 
         private void btSearch_Click(object sender, EventArgs e)
@@ -87,34 +89,18 @@ namespace 数据分析软件
             try
             {
                 var buff = port.ReadLine();
-                var digit = new double[4];
-                var match = Regex.Match(buff, @"frequery=(\d+)	 symbol=(\d+) 	 level = (-?\d+),C_N=(-?\d+\.\d+)db demodlock=(\d)");
+                var digit = new double[6];
+                var match = Regex.Match(buff, @"frequery=(\d+)	 symbol=(\d+) 	 level = (-?\d+),C_N=(-?\d+\.\d+)db demodlock=(\d) carlock=(\d)");
                 var time = DateTime.Now;
                 if (match.Success)
                 {
-                    for (int i = 0; i < match.Groups.Count-1; i++)
+                    for (int i = 0; i < match.Groups.Count; i++)
                     {
                         if (i != 0)
                         {
                             digit[i - 1] = Convert.ToDouble(match.Groups[i].Value);
                         }
-                    }
-                    this.Invoke(new System.Action(() =>
-                    {
-                        if (match.Groups[5].Value.Contains("0"))
-                        {
-                            lbDemodLock.Text = "失锁";
-                        }
-                        else if (match.Groups[5].Value.Contains("1"))
-                        {
-                            lbDemodLock.Text = "锁定";
-                        }
-                        else
-                        {
-                            lbDemodLock.Text = "未知";
-                        }
-                    }));
-                   
+                    }           
                     ApandData(time, digit);
                 }
                 else
@@ -148,10 +134,10 @@ namespace 数据分析软件
         }
 
 
-        void ChangeXAsix(Chart chart,Func<double, Range> func)
+        void ChangeXAsix(Chart chart)
         {
             int count = chart.Series[0].Points.Count;
-            if (count > 500)
+            if (count > MaxCount)
             {
                 chart.Series[0].Points.RemoveAt(0);
                 chart.ChartAreas[0].AxisX.Minimum = chart.Series[0].Points.First().XValue - 1;
@@ -160,34 +146,53 @@ namespace 数据分析软件
             else
             {
                 var remain = count / 100;
-                chart.ChartAreas[0].AxisX.Minimum = 0;
-                chart.ChartAreas[0].AxisX.Maximum = remain*100 + 100;
+                chart.ChartAreas[0].AxisX.Minimum = chart.Series[0].Points.First().XValue - 1;
+                chart.ChartAreas[0].AxisX.Maximum = chart.Series[0].Points.First().XValue + remain * 100 + 100;
             }
-           
+          
+            var min = chart.Series[0].Points.Select(p => p.YValues[0]).Min();
+            var max = chart.Series[0].Points.Select(p => p.YValues[0]).Max();
+            chart.ChartAreas[0].AxisY.Minimum = min-1;
+            chart.ChartAreas[0].AxisY.Maximum = max+1;
+        }
 
-            //var avg = chart.Series[0].Points.Select(p => p.YValues[0]).Average();
-            //var range = func(avg);
-            //if (range != null)
+        void Change2ndAxis(Chart chart)
+        {
+            int count = chart.Series[1].Points.Count;
+            if (count > MaxCount)
             {
-                var min = chart.Series[0].Points.Select(p => p.YValues[0]).Min();
-                var max = chart.Series[0].Points.Select(p => p.YValues[0]).Max();
-                chart.ChartAreas[0].AxisY.Minimum = min-1;
-                chart.ChartAreas[0].AxisY.Maximum = max+1;
+                chart.Series[1].Points.RemoveAt(0);
+                chart.ChartAreas[0].AxisX2.Minimum = chart.Series[1].Points.First().XValue - 1;
+                chart.ChartAreas[0].AxisX2.Maximum = chart.Series[1].Points.Last().XValue + 1;
+            }
+            else
+            {
+                var remain = count / 100;
+                chart.ChartAreas[0].AxisX2.Maximum = chart.Series[1].Points.First().XValue + remain * 100 + 100;
+                chart.ChartAreas[0].AxisX2.Maximum = remain * 100 + 100;
             }
         }
+
         int count = 1;
+        int MaxCount = 100;
         private void ApandData(DateTime time, double[] data)
         {
             this.Invoke(new System.Action(() =>
             {
                 chartFreq.Series[0].Points.AddXY(count, data[0]/1000);
+                chartFreq.Series[1].Points.AddXY(count, data[5]);
                 chartSymbol.Series[0].Points.AddXY(count, data[1]/1000);
+                chartSymbol.Series[1].Points.AddXY(count, data[4]);
                 chartLevel.Series[0].Points.AddXY(count, data[2]);
                 chartCN.Series[0].Points.AddXY(count, data[3]);
-                ChangeXAsix(chartFreq, avg => new Range(avg - 1, avg + 1));
-                ChangeXAsix(chartSymbol, avg => new Range(avg - 1, avg + 1));
-                ChangeXAsix(chartLevel, avg => new Range(avg - 1, avg + 1));
-                ChangeXAsix(chartCN, avg => new Range(avg - 1, avg + 1));
+
+                ChangeXAsix(chartFreq);
+                ChangeXAsix(chartSymbol);
+                ChangeXAsix(chartLevel);
+                ChangeXAsix(chartCN);
+
+                Change2ndAxis(chartFreq);
+                Change2ndAxis(chartSymbol);
                 count++;
             }));
         }
@@ -242,6 +247,8 @@ namespace 数据分析软件
             btStart_Click(null, null);
             chartFreq.Series[0].Points.Clear();
             chartSymbol.Series[0].Points.Clear();
+            chartFreq.Series[1].Points.Clear();
+            chartSymbol.Series[1].Points.Clear();
             chartLevel.Series[0].Points.Clear();
             chartCN.Series[0].Points.Clear();
 
@@ -257,6 +264,31 @@ namespace 数据分析软件
             System.Windows.Forms.Application.DoEvents();
             port.DataReceived -= Port_DataReceived;
             port.Close();
+        }
+
+        void TrunData(Chart chart)
+        {
+            while (chart.Series[0].Points.Count > MaxCount)
+            {
+                chart.Series[0].Points.RemoveAt(0);
+            }
+            if (chart.Series.Count == 2)
+            {
+                while (chart.Series[1].Points.Count > MaxCount)
+                {
+                    chart.Series[1].Points.RemoveAt(0);
+                }
+            }
+        }
+
+        
+
+        private void tbWindow_ValueChanged(object sender, EventArgs e)
+        {
+            btStart_Click(null, null);
+            MaxCount = tbWindow.Value * 100;
+            Array.ForEach(charts,chart => TrunData(chart));
+            btStart_Click(null, null);
         }
     }
 }

@@ -30,12 +30,14 @@
         {
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.listSerialPort = new System.Windows.Forms.ListBox();
             this.btConnert = new System.Windows.Forms.Button();
             this.btSearch = new System.Windows.Forms.Button();
@@ -48,12 +50,12 @@
             this.btSave = new System.Windows.Forms.Button();
             this.tbDebug = new System.Windows.Forms.TextBox();
             this.btClear = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lbDemodLock = new System.Windows.Forms.Label();
+            this.tbWindow = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.chartFreq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartSymbol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartLevel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCN)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbWindow)).BeginInit();
             this.SuspendLayout();
             // 
             // listSerialPort
@@ -96,6 +98,8 @@
             // 
             // chartFreq
             // 
+            chartArea1.AxisY2.Maximum = 3D;
+            chartArea1.AxisY2.Minimum = 0D;
             chartArea1.Name = "ChartArea1";
             this.chartFreq.ChartAreas.Add(chartArea1);
             this.chartFreq.Location = new System.Drawing.Point(14, 94);
@@ -105,23 +109,43 @@
             series1.Name = "Freqencny";
             series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
             series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series2.Color = System.Drawing.Color.Tomato;
+            series2.Name = "CarLock";
+            series2.XAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
+            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series2.YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
+            series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
             this.chartFreq.Series.Add(series1);
+            this.chartFreq.Series.Add(series2);
             this.chartFreq.Size = new System.Drawing.Size(450, 300);
             this.chartFreq.TabIndex = 4;
             this.chartFreq.Text = "chartFreq";
             // 
             // chartSymbol
             // 
+            chartArea2.AxisY2.Maximum = 3D;
+            chartArea2.AxisY2.Minimum = 0D;
             chartArea2.Name = "ChartArea1";
             this.chartSymbol.ChartAreas.Add(chartArea2);
             this.chartSymbol.Location = new System.Drawing.Point(520, 94);
             this.chartSymbol.Name = "chartSymbol";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series2.Name = "Symbol";
-            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            this.chartSymbol.Series.Add(series2);
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series3.Name = "Symbol";
+            series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series3.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series4.Color = System.Drawing.Color.OrangeRed;
+            series4.Name = "DemodLock";
+            series4.XAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
+            series4.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series4.YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
+            series4.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            this.chartSymbol.Series.Add(series3);
+            this.chartSymbol.Series.Add(series4);
             this.chartSymbol.Size = new System.Drawing.Size(450, 300);
             this.chartSymbol.TabIndex = 5;
             this.chartSymbol.Text = "chartSymbol";
@@ -132,12 +156,12 @@
             this.chartLevel.ChartAreas.Add(chartArea3);
             this.chartLevel.Location = new System.Drawing.Point(14, 425);
             this.chartLevel.Name = "chartLevel";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series3.Name = "Level";
-            series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series3.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            this.chartLevel.Series.Add(series3);
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series5.Name = "Level";
+            series5.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series5.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            this.chartLevel.Series.Add(series5);
             this.chartLevel.Size = new System.Drawing.Size(450, 300);
             this.chartLevel.TabIndex = 6;
             this.chartLevel.Text = "chartLevel";
@@ -148,12 +172,12 @@
             this.chartCN.ChartAreas.Add(chartArea4);
             this.chartCN.Location = new System.Drawing.Point(520, 425);
             this.chartCN.Name = "chartCN";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series4.Name = "Series1";
-            series4.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series4.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            this.chartCN.Series.Add(series4);
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series6.Name = "Series1";
+            series6.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series6.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            this.chartCN.Series.Add(series6);
             this.chartCN.Size = new System.Drawing.Size(450, 300);
             this.chartCN.TabIndex = 7;
             this.chartCN.Text = "chartCN";
@@ -197,31 +221,22 @@
             this.btClear.UseVisualStyleBackColor = true;
             this.btClear.Click += new System.EventHandler(this.btClear_Click);
             // 
-            // label1
+            // tbWindow
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(362, 73);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 12);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "demod锁定:";
-            // 
-            // lbDemodLock
-            // 
-            this.lbDemodLock.AutoSize = true;
-            this.lbDemodLock.Location = new System.Drawing.Point(433, 73);
-            this.lbDemodLock.Name = "lbDemodLock";
-            this.lbDemodLock.Size = new System.Drawing.Size(11, 12);
-            this.lbDemodLock.TabIndex = 11;
-            this.lbDemodLock.Text = "?";
+            this.tbWindow.Location = new System.Drawing.Point(359, 6);
+            this.tbWindow.Minimum = 1;
+            this.tbWindow.Name = "tbWindow";
+            this.tbWindow.Size = new System.Drawing.Size(155, 45);
+            this.tbWindow.TabIndex = 10;
+            this.tbWindow.Value = 1;
+            this.tbWindow.ValueChanged += new System.EventHandler(this.tbWindow_ValueChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 762);
-            this.Controls.Add(this.lbDemodLock);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.tbWindow);
             this.Controls.Add(this.tbDebug);
             this.Controls.Add(this.btClear);
             this.Controls.Add(this.btSave);
@@ -242,6 +257,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.chartSymbol)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartLevel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCN)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbWindow)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -261,8 +277,7 @@
         private System.Windows.Forms.Button btSave;
         private System.Windows.Forms.TextBox tbDebug;
         private System.Windows.Forms.Button btClear;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lbDemodLock;
+        private System.Windows.Forms.TrackBar tbWindow;
     }
 }
 
