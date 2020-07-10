@@ -115,7 +115,7 @@ namespace 数据分析软件
                     {
                         Log("板子复位！");
                     }
-                    match = Regex.Match(buff, @"tmglock=(\d+)\tlock quality=(\d+)");
+                    match = Regex.Match(buff, @"tmglock=(-?\d+)\tlock quality=(\d+)");
                     if (match.Success)
                     {
                         var result = Filter(match.Groups)                          
@@ -123,7 +123,14 @@ namespace 数据分析软件
                             .ToArray();
                         LockForm.AppendData(result);
                     }
-
+                    match = Regex.Match(buff, @"ldi=(-?\d+)\tcarlock=(\d+)");
+                    if (match.Success)
+                    {
+                        var result = Filter(match.Groups)
+                            .Select(m => Convert.ToInt32(m))
+                            .ToArray();
+                        Carr.AppendData(result);
+                    }
 
                 }
             }
@@ -261,6 +268,7 @@ namespace 数据分析软件
             chartCN.Series[0].Points.Clear();
             tbDebug.Text = "";
             LockForm.Clear();
+            Carr.Clear();
             btStart_Click(null, null);
         }
 
@@ -293,8 +301,10 @@ namespace 数据分析软件
             btStart_Click(null, null);
             MaxCount = tbWindow.Value * 100;
             LockForm.MaxCount = tbWindow.Value * 100;
+            Carr.MaxCount = tbWindow.Value * 100;
             Array.ForEach(charts,chart => TrunData(chart));
             TrunData(LockForm.chart1);
+            TrunData(Carr.chart1);
             btStart_Click(null, null);
         }
 
