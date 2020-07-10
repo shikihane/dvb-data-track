@@ -23,10 +23,16 @@ namespace 数据分析软件
     public partial class Form1 : Form
     {
         Chart[] charts;
+        Form2 LockForm;
+        CarrForm Carr;
         public Form1()
         {
             InitializeComponent();
             charts = new Chart[]{ chartFreq,chartSymbol,chartLevel,chartCN };
+            LockForm = new Form2(this);
+            LockForm.Hide();
+            Carr = new CarrForm();
+            Carr.Hide();
         }
 
         private void btSearch_Click(object sender, EventArgs e)
@@ -109,6 +115,16 @@ namespace 数据分析软件
                     {
                         Log("板子复位！");
                     }
+                    match = Regex.Match(buff, @"tmglock=(\d+)\tlock quality=(\d+)");
+                    if (match.Success)
+                    {
+                        var result = Filter(match.Groups)                          
+                            .Select(m => Convert.ToInt32(m))
+                            .ToArray();
+                        LockForm.AppendData(result);
+                    }
+
+
                 }
             }
             catch (TimeoutException)
@@ -120,19 +136,15 @@ namespace 数据分析软件
 
         }
 
-
-        class Range
+        private string[] Filter(GroupCollection groups)
         {
-            public double min;
-            public double max;
-
-            public Range(double min, double max)
+            string[] data = new string[groups.Count - 1];
+            for (int i = 1; i < groups.Count; i++)
             {
-                this.min = min;
-                this.max = max;
+                data[i - 1] = groups[i].Value;
             }
+            return data;
         }
-
 
         void ChangeXAsix(Chart chart)
         {
@@ -232,13 +244,9 @@ namespace 数据分析软件
             MessageBox.Show("保存完毕");
         }
 
-        //Queue Time = new Queue(200);
-        //Queue Freqenercy = new Queue(200);
         private void Form1_Load(object sender, EventArgs e)
         {
             btSearch_Click(null, null);
-            //chartFreq.Series[0].YValueType = ChartValueType.Double;
-            //chartFreq.Series[0].Points.DataBindXY(Time,Freqenercy);
         }
 
         private void btClear_Click(object sender, EventArgs e)
@@ -251,11 +259,8 @@ namespace 数据分析软件
             chartSymbol.Series[1].Points.Clear();
             chartLevel.Series[0].Points.Clear();
             chartCN.Series[0].Points.Clear();
-
-            //chartFreq.ChartAreas[0].AxisY.Minimum = 0;
-            //chartSymbol.ChartAreas[0].AxisY.Minimum = 0;
-            //chartLevel.ChartAreas[0].AxisY.Maximum = 0;
             tbDebug.Text = "";
+            LockForm.Clear();
             btStart_Click(null, null);
         }
 
@@ -287,7 +292,9 @@ namespace 数据分析软件
         {
             btStart_Click(null, null);
             MaxCount = tbWindow.Value * 100;
+            LockForm.MaxCount = tbWindow.Value * 100;
             Array.ForEach(charts,chart => TrunData(chart));
+            TrunData(LockForm.chart1);
             btStart_Click(null, null);
         }
 
@@ -321,6 +328,16 @@ namespace 数据分析软件
         private void chartFreq_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void btLockForm_Click(object sender, EventArgs e)
+        {
+            LockForm.Show();
+        }
+
+        private void btCarr_Click(object sender, EventArgs e)
+        {
+            Carr.Show();
         }
     }
 }

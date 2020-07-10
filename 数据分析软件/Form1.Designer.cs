@@ -52,7 +52,8 @@
             this.btClear = new System.Windows.Forms.Button();
             this.tbWindow = new System.Windows.Forms.TrackBar();
             this.btFix = new System.Windows.Forms.Button();
-            this.btTest = new System.Windows.Forms.Button();
+            this.btLockForm = new System.Windows.Forms.Button();
+            this.btCarr = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chartFreq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartSymbol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartLevel)).BeginInit();
@@ -244,26 +245,37 @@
             this.btFix.UseVisualStyleBackColor = true;
             this.btFix.Click += new System.EventHandler(this.btFix_Click);
             // 
-            // btTest
+            // btLockForm
             // 
-            this.btTest.Location = new System.Drawing.Point(359, 65);
-            this.btTest.Name = "btTest";
-            this.btTest.Size = new System.Drawing.Size(75, 23);
-            this.btTest.TabIndex = 8;
-            this.btTest.Text = "测试";
-            this.btTest.UseVisualStyleBackColor = true;
-            this.btTest.Click += new System.EventHandler(this.btTest_Click);
+            this.btLockForm.Location = new System.Drawing.Point(359, 65);
+            this.btLockForm.Name = "btLockForm";
+            this.btLockForm.Size = new System.Drawing.Size(75, 23);
+            this.btLockForm.TabIndex = 11;
+            this.btLockForm.Text = "符号锁定";
+            this.btLockForm.UseVisualStyleBackColor = true;
+            this.btLockForm.Click += new System.EventHandler(this.btLockForm_Click);
+            // 
+            // btCarr
+            // 
+            this.btCarr.Location = new System.Drawing.Point(439, 65);
+            this.btCarr.Name = "btCarr";
+            this.btCarr.Size = new System.Drawing.Size(75, 23);
+            this.btCarr.TabIndex = 11;
+            this.btCarr.Text = "载波锁定";
+            this.btCarr.UseVisualStyleBackColor = true;
+            this.btCarr.Click += new System.EventHandler(this.btCarr_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 762);
+            this.Controls.Add(this.btCarr);
+            this.Controls.Add(this.btLockForm);
             this.Controls.Add(this.tbWindow);
             this.Controls.Add(this.tbDebug);
             this.Controls.Add(this.btClear);
             this.Controls.Add(this.btSave);
-            this.Controls.Add(this.btTest);
             this.Controls.Add(this.btFix);
             this.Controls.Add(this.btStart);
             this.Controls.Add(this.chartCN);
@@ -304,7 +316,8 @@
         private System.Windows.Forms.Button btClear;
         private System.Windows.Forms.TrackBar tbWindow;
         private System.Windows.Forms.Button btFix;
-        private System.Windows.Forms.Button btTest;
+        private System.Windows.Forms.Button btLockForm;
+        private System.Windows.Forms.Button btCarr;
     }
 }
 
