@@ -25,6 +25,7 @@ namespace 数据分析软件
         Chart[] charts;
         Form2 LockForm;
         CarrForm Carr;
+        Form3 AgcForm;
         public Form1()
         {
             InitializeComponent();
@@ -33,6 +34,9 @@ namespace 数据分析软件
             LockForm.Hide();
             Carr = new CarrForm();
             Carr.Hide();
+            AgcForm = new Form3();
+            AgcForm.Hide();
+
         }
 
         private void btSearch_Click(object sender, EventArgs e)
@@ -132,6 +136,14 @@ namespace 数据分析软件
                         Carr.AppendData(result);
                     }
 
+                    match = Regex.Match(buff, @"agc=(\d+)\tagc_ref=(\d+)");
+                    if (match.Success)
+                    {
+                        var result = Filter(match.Groups)
+                            .Select(m => Convert.ToInt32(m))
+                            .ToArray();
+                        AgcForm.AppendData(result);
+                    }
                 }
             }
             catch (TimeoutException)
@@ -269,6 +281,7 @@ namespace 数据分析软件
             tbDebug.Text = "";
             LockForm.Clear();
             Carr.Clear();
+            AgcForm.Clear();
             btStart_Click(null, null);
         }
 
@@ -302,9 +315,11 @@ namespace 数据分析软件
             MaxCount = tbWindow.Value * 100;
             LockForm.MaxCount = tbWindow.Value * 100;
             Carr.MaxCount = tbWindow.Value * 100;
+            AgcForm.MaxCount = tbWindow.Value * 100;
             Array.ForEach(charts,chart => TrunData(chart));
             TrunData(LockForm.chart1);
             TrunData(Carr.chart1);
+            TrunData(AgcForm.chart1);
             btStart_Click(null, null);
         }
 
@@ -348,6 +363,11 @@ namespace 数据分析软件
         private void btCarr_Click(object sender, EventArgs e)
         {
             Carr.Show();
+        }
+
+        private void btACG_Click(object sender, EventArgs e)
+        {
+            AgcForm.Show();
         }
     }
 }

@@ -54,6 +54,7 @@
             this.btFix = new System.Windows.Forms.Button();
             this.btLockForm = new System.Windows.Forms.Button();
             this.btCarr = new System.Windows.Forms.Button();
+            this.btACG = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chartFreq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartSymbol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartLevel)).BeginInit();
@@ -265,12 +266,23 @@
             this.btCarr.UseVisualStyleBackColor = true;
             this.btCarr.Click += new System.EventHandler(this.btCarr_Click);
             // 
+            // btACG
+            // 
+            this.btACG.Location = new System.Drawing.Point(359, 36);
+            this.btACG.Name = "btACG";
+            this.btACG.Size = new System.Drawing.Size(75, 23);
+            this.btACG.TabIndex = 11;
+            this.btACG.Text = "AGC数值";
+            this.btACG.UseVisualStyleBackColor = true;
+            this.btACG.Click += new System.EventHandler(this.btACG_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 762);
             this.Controls.Add(this.btCarr);
+            this.Controls.Add(this.btACG);
             this.Controls.Add(this.btLockForm);
             this.Controls.Add(this.tbWindow);
             this.Controls.Add(this.tbDebug);
@@ -318,6 +330,7 @@
         private System.Windows.Forms.Button btFix;
         private System.Windows.Forms.Button btLockForm;
         private System.Windows.Forms.Button btCarr;
+        private System.Windows.Forms.Button btACG;
     }
 }
 
