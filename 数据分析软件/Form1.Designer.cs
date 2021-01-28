@@ -29,9 +29,11 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
@@ -55,6 +57,7 @@
             this.btLockForm = new System.Windows.Forms.Button();
             this.btCarr = new System.Windows.Forms.Button();
             this.btACG = new System.Windows.Forms.Button();
+            this.btIQ = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chartFreq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartSymbol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartLevel)).BeginInit();
@@ -102,20 +105,27 @@
             // 
             // chartFreq
             // 
+            chartArea1.AxisY.TextOrientation = System.Windows.Forms.DataVisualization.Charting.TextOrientation.Horizontal;
+            chartArea1.AxisY.Title = "频率:KHz";
+            chartArea1.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
             chartArea1.AxisY2.Maximum = 3D;
             chartArea1.AxisY2.Minimum = 0D;
             chartArea1.Name = "ChartArea1";
             this.chartFreq.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chartFreq.Legends.Add(legend1);
             this.chartFreq.Location = new System.Drawing.Point(14, 94);
             this.chartFreq.Name = "chartFreq";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series1.Legend = "Legend1";
             series1.Name = "Freqencny";
             series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
             series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
             series2.ChartArea = "ChartArea1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series2.Color = System.Drawing.Color.Tomato;
+            series2.Legend = "Legend1";
             series2.Name = "CarLock";
             series2.XAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
             series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
@@ -130,20 +140,27 @@
             // 
             // chartSymbol
             // 
+            chartArea2.AxisY.TextOrientation = System.Windows.Forms.DataVisualization.Charting.TextOrientation.Horizontal;
+            chartArea2.AxisY.Title = "符号率:Kbps";
+            chartArea2.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
             chartArea2.AxisY2.Maximum = 3D;
             chartArea2.AxisY2.Minimum = 0D;
             chartArea2.Name = "ChartArea1";
             this.chartSymbol.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chartSymbol.Legends.Add(legend2);
             this.chartSymbol.Location = new System.Drawing.Point(520, 94);
             this.chartSymbol.Name = "chartSymbol";
             series3.ChartArea = "ChartArea1";
             series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series3.Legend = "Legend1";
             series3.Name = "Symbol";
             series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
             series3.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
             series4.ChartArea = "ChartArea1";
             series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series4.Color = System.Drawing.Color.OrangeRed;
+            series4.Legend = "Legend1";
             series4.Name = "DemodLock";
             series4.XAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
             series4.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
@@ -157,6 +174,9 @@
             // 
             // chartLevel
             // 
+            chartArea3.AxisY.TextOrientation = System.Windows.Forms.DataVisualization.Charting.TextOrientation.Horizontal;
+            chartArea3.AxisY.Title = "电平:dBm";
+            chartArea3.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
             chartArea3.Name = "ChartArea1";
             this.chartLevel.ChartAreas.Add(chartArea3);
             this.chartLevel.Location = new System.Drawing.Point(14, 425);
@@ -173,6 +193,9 @@
             // 
             // chartCN
             // 
+            chartArea4.AxisY.TextOrientation = System.Windows.Forms.DataVisualization.Charting.TextOrientation.Horizontal;
+            chartArea4.AxisY.Title = "CN:dB";
+            chartArea4.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
             chartArea4.Name = "ChartArea1";
             this.chartCN.ChartAreas.Add(chartArea4);
             this.chartCN.Location = new System.Drawing.Point(520, 425);
@@ -276,12 +299,23 @@
             this.btACG.UseVisualStyleBackColor = true;
             this.btACG.Click += new System.EventHandler(this.btACG_Click);
             // 
+            // btIQ
+            // 
+            this.btIQ.Location = new System.Drawing.Point(439, 36);
+            this.btIQ.Name = "btIQ";
+            this.btIQ.Size = new System.Drawing.Size(75, 23);
+            this.btIQ.TabIndex = 11;
+            this.btIQ.Text = "IQ监测";
+            this.btIQ.UseVisualStyleBackColor = true;
+            this.btIQ.Click += new System.EventHandler(this.btIQ_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 762);
             this.Controls.Add(this.btCarr);
+            this.Controls.Add(this.btIQ);
             this.Controls.Add(this.btACG);
             this.Controls.Add(this.btLockForm);
             this.Controls.Add(this.tbWindow);
@@ -331,6 +365,7 @@
         private System.Windows.Forms.Button btLockForm;
         private System.Windows.Forms.Button btCarr;
         private System.Windows.Forms.Button btACG;
+        private System.Windows.Forms.Button btIQ;
     }
 }
 

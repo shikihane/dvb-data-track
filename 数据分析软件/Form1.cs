@@ -26,6 +26,8 @@ namespace 数据分析软件
         Form2 LockForm;
         CarrForm Carr;
         Form3 AgcForm;
+        IqForm IqForm;
+
         public Form1()
         {
             InitializeComponent();
@@ -36,6 +38,8 @@ namespace 数据分析软件
             Carr.Hide();
             AgcForm = new Form3();
             AgcForm.Hide();
+            IqForm = new IqForm();
+            IqForm.Hide();
 
         }
 
@@ -143,6 +147,15 @@ namespace 数据分析软件
                             .Select(m => Convert.ToInt32(m))
                             .ToArray();
                         AgcForm.AppendData(result);
+                    }
+
+                    match = Regex.Match(buff, @"power i=(\d+) power q=(\d+)");
+                    if (match.Success)
+                    {
+                        var result = Filter(match.Groups)
+                            .Select(m => Convert.ToInt32(m))
+                            .ToArray();
+                        IqForm.AppendData(result);
                     }
                 }
             }
@@ -282,6 +295,7 @@ namespace 数据分析软件
             LockForm.Clear();
             Carr.Clear();
             AgcForm.Clear();
+            IqForm.Clear();
             btStart_Click(null, null);
         }
 
@@ -316,10 +330,12 @@ namespace 数据分析软件
             LockForm.MaxCount = tbWindow.Value * 100;
             Carr.MaxCount = tbWindow.Value * 100;
             AgcForm.MaxCount = tbWindow.Value * 100;
+            IqForm.MaxCount = tbWindow.Value * 100;
             Array.ForEach(charts,chart => TrunData(chart));
             TrunData(LockForm.chart1);
             TrunData(Carr.chart1);
             TrunData(AgcForm.chart1);
+            TrunData(IqForm.chart1);
             btStart_Click(null, null);
         }
 
@@ -368,6 +384,11 @@ namespace 数据分析软件
         private void btACG_Click(object sender, EventArgs e)
         {
             AgcForm.Show();
+        }
+
+        private void btIQ_Click(object sender, EventArgs e)
+        {
+            IqForm.Show();
         }
     }
 }

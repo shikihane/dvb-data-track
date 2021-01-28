@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IqForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IqForm.Designer.cs">
+      <DependentUpon>IqForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CarrForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,6 +82,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="IqForm.resx">
+      <DependentUpon>IqForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CarrForm.resx">
       <DependentUpon>CarrForm.cs</DependentUpon>
     </EmbeddedResource>
